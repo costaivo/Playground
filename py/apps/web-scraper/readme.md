@@ -15,3 +15,6 @@
 - !pyenv local
 - !python -V
  -!pip list
+
+
+//https://linuxacademy.com/course/aws-certified-solutions-architect-associate-level/
