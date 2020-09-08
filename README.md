@@ -4,6 +4,6 @@ Using this repository to learn NestJS
 
 ## Setting up Developement Env
 
-
+Install the nestjs CLI
 
 
