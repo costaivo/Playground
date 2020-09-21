@@ -29,18 +29,12 @@ export class TasksService {
     async createTask(createTaskDto: CreateTaskDto) {
         return this.taskRepository.creteTask(createTaskDto);
     }
-    // createTask(createTaskDto: CreateTaskDto): Task {
-    //     const { title, description } = createTaskDto;
 
-    //     const task: Task = {
-    //         id: uuidv4(),
-    //         title,
-    //         description,
-    //         status: TaskStatus.OPEN
-    //     }
-    //     this.tasks.push(task);
-    //     return task;
-    // }
+      async  deleteTask(id: number): Promise<void> {
+        this.taskRepository.delete(id);
+    }
+
+
 
 
     // getTasksWithFilters(filterDto: GetTasksFilterDto): Task[] {
@@ -55,11 +49,7 @@ export class TasksService {
     //     return tasks;
     // }
 
-    // deleteTask(id: string): void {
-    //     const found = this.getTaskById(id);
 
-    //     this.tasks = this.tasks.filter(task => task.id != found.id)
-    // }
     // updateTaskStatus(id: string, status: TaskStatus): Task {
     //     const task = this.getTaskById(id);
     //     task.status = status;
