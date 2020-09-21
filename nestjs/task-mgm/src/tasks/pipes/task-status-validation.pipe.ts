@@ -7,7 +7,7 @@ export class TaskStatusValidationPipe implements PipeTransform {
         TaskStatus.IN_PROGRESS,
         TaskStatus.DONE,
     ];
-    transform(value: any, metadata: ArgumentMetadata) {
+    transform(value: any) {
         value = value.toUpperCase();
 
         if (!this.isStatusValid(value)) {
