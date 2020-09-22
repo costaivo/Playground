@@ -13,8 +13,8 @@ export class TasksService {
         private taskRepository: TaskRepository
     ) { }
 
-    getTasks(fliterDto: GetTasksFilterDto){
-        return [];
+    getTasks(fliterDto: GetTasksFilterDto):Promise<Task[]>{
+        return this.taskRepository.getTasks(fliterDto);
     }
 
     async getTaskById(id: number): Promise<Task> {
