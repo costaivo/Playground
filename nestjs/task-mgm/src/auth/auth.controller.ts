@@ -6,12 +6,15 @@ import { AuthCredentialDto } from './dto/auth-credential.dto';
 export class AuthController {
 
     constructor(private authService: AuthService) {
-
-
     }
 
     @Post('/signUp')
-    async signUp(@Body() authCredentialDto: AuthCredentialDto) {
+    async signUp(@Body() authCredentialDto: AuthCredentialDto):Promise<void> {
         return this.authService.signUp(authCredentialDto);
+    }
+
+    @Post('/signIn')
+    async signIn(@Body() authCredentialDto: AuthCredentialDto){
+        return this.authService.signIn(authCredentialDto);
     }
 }
