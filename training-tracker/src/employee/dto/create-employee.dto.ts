@@ -12,5 +12,5 @@ export class CreateEmployeeDto {
 
     @IsNotEmpty()
     @IsEmail()
-    email:string;
+    emailAddress:string;
 }
