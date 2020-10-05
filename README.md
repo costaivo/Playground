@@ -1,9 +1,60 @@
-# Playground for Learning NestJS
+# NestJS
 
-Using this repository to learn NestJS
+## Installing nestJS
 
-## Setting up Developement Env
+``` bash 
+# using npm 
+npm install -g @nestjs/cli
 
-Install the nestjs CLI
+# Using Yarn
+yarn global add @nestjs/cli
+```
+
+## Creating new Application
+
+``` bash 
+# Creating a new application 
+nest new training-tracker-api
+```
+
+## Running the project
+``` bash
+# run with watch enabled
+yarn start:dev
+npm start:dev
+
+# run without watch
+yarn start
+npm start
+```
+
+## Generating Components using CLI
+
+Creating module, service, controller
+
+### Create new Module
+
+``` bash
+nest g module employee
+```
+
+### Create new Service
+
+``` bash
+nest g service employee
+```
+
+### Create new Controller
+
+``` bash
+nest g controller employee
+```
+
+## 3rd Party Packages
 
 
+### Installing validators
+
+``` bash
+yarn add class-validator
+```
