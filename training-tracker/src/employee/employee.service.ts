@@ -1,32 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Employee } from './employee.entity';
 import { v4 as uuid4} from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EmployeeRepository } from './employee.repository';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
+
 
 @Injectable()
 export class EmployeeService {
-    private employees: Employee[] = [];
+ 
+    constructor(
+        @InjectRepository(EmployeeRepository)
+        private employeeRepository: EmployeeRepository) { }
 
-    createEmployee(createEmployee: any) {
-        const { firstName, lastName } = createEmployee;
 
-        const emp = new Employee();
-        emp.id = uuid4();
-        emp.firstName = firstName;
-        emp.lastName = lastName;
-        this.employees.push(emp);
-        return emp;
+    async getEmployees(): Promise<Employee[]> {
+        return this.employeeRepository.getEmployees();
     }
 
-    getAllEmployees() {
-        return this.employees;
+   async  getEmployeeById(id: number): Promise<Employee> {
+        const employee = await this.employeeRepository.findOne(id);
+        return employee;
     }
 
-    getEmployeeById(id: string) {
-        return this.employees.find(x => x.id == id);
+   async createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
+        return this.employeeRepository.createEmployee(createEmployeeDto);
     }
 
-    deleteEmployee(id: string) {
-        const newList = this.employees.filter(x => x.id == id);
-        this.employees = newList;
+    async deleteEmployee(id:number):Promise<void>{
+        const result = await this.employeeRepository.delete(id);
+        if(result.affected === 0 ){
+            throw new NotFoundException(`Employee with id "${id}" not found`)
+        }
+    }
+
+   async  updateEmployee(id: number, updateEmployee: CreateEmployeeDto) :Promise<Employee>{
+        const employee = await this.employeeRepository.findOne(id);
+        if(employee===null ){
+            throw new NotFoundException(`Employee with id "${id}" not found`)
+        }
+        const {firstName, lastName,emailAddress}= updateEmployee;
+        employee.firstName = updateEmployee.firstName;
+        employee.lastName = updateEmployee.lastName;
+        employee.emailAddress = updateEmployee.emailAddress;
+        await employee.save();
+        return employee;
     }
 }

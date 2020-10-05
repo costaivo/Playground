@@ -58,3 +58,9 @@ nest g controller employee
 ``` bash
 yarn add class-validator
 ```
+
+### Installing PostgreSQL Dependencies
+
+``` bash
+yarn add @nestjs/typeorm typeorm pg
+```

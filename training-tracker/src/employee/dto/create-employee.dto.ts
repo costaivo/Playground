@@ -1,16 +1,18 @@
+
 import { IsEmail, IsNotEmpty, IsOptional } from "class-validator";
 
+
 export class CreateEmployeeDto {
+    @IsEmail()
     @IsNotEmpty()
-    firstName:string;
+    emailAddress: string;
 
     @IsNotEmpty()
-    lastName:string;
+    firstName: string;
 
     @IsOptional()
-    middleName:string;
+    middleName: string;
 
     @IsNotEmpty()
-    @IsEmail()
-    emailAddress:string;
+    lastName: string;
 }
