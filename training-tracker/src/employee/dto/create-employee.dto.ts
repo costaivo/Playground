@@ -1,18 +1,8 @@
 
-import { IsEmail, IsNotEmpty, IsOptional } from "class-validator";
+import { IsNotEmpty } from "class-validator";
+import { BaseEmployeeDto } from "./base-employee.dto";
 
-
-export class CreateEmployeeDto {
-    @IsEmail()
+export class CreateEmployeeDto extends BaseEmployeeDto{
     @IsNotEmpty()
-    emailAddress: string;
-
-    @IsNotEmpty()
-    firstName: string;
-
-    @IsOptional()
-    middleName: string;
-
-    @IsNotEmpty()
-    lastName: string;
+    employeeCode:string;
 }

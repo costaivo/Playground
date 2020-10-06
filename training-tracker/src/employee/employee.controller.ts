@@ -1,41 +1,41 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, ParseUUIDPipe, Patch, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Employee } from './employee.entity';
 import { EmployeeService } from './employee.service';
 
 @Controller('employee')
+@UseInterceptors(ClassSerializerInterceptor)
 export class EmployeeController {
-
 
     constructor(private employeeService: EmployeeService) {
 
     }
 
     @Get()
-    getAllEmployees(): Promise<Employee[]> {
+    getEmployees(): Promise<Employee[]> {
         return this.employeeService.getEmployees();
     }
-
     @Get('/:id')
-    getEmployeeById(@Param('id', ParseIntPipe) id: number): Promise<Employee> {
+    getEmployeeById(@Param('id', ParseUUIDPipe) id: string): Promise<Employee> {
         return this.employeeService.getEmployeeById(id);
     }
 
     @Post()
     @UsePipes(ValidationPipe)
-    createEmployee(@Body() createEmployee: CreateEmployeeDto): Promise<Employee> {
-        console.log(createEmployee);
-        return this.employeeService.createEmployee(createEmployee);
+    createEmployee(@Body() createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
+        return this.employeeService.createEmployee(createEmployeeDto);
     }
 
     @Delete('/:id')
-    deleteEmployee(@Param('id', ParseIntPipe) id: number): Promise<void> {
-        return this.employeeService.deleteEmployee(id);
+    deleteEmployee(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+        return this.employeeService.deleteEmployee(id)
     }
 
     @Put('/:id')
-    updateEmployee(@Param('id', ParseIntPipe) id: number,
-        @Body() updateEmployee: CreateEmployeeDto): Promise<Employee> {
-        return this.employeeService.updateEmployee(id, updateEmployee);
+    updateEmployee(@Param('id', ParseUUIDPipe) id: string,
+    @Body() updateEmployeeDto:UpdateEmployeeDto): Promise<Employee> {
+        return this.employeeService.updateEmployee(id,updateEmployeeDto);
     }
+
 }
