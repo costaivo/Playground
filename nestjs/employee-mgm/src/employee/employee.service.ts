@@ -28,15 +28,9 @@ export class EmployeeService {
 
     async updateEmployee(id: string, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
         const employee = await this.getEmployeeByExternalId(id);
-        const {firstName, lastName} = updateEmployeeDto;
-        employee.firstName = firstName;
-        employee.lastName = lastName;
-
-        await employee.save();
-        console.log(employee);
+        await this.employeeRepository.updateEmployee(employee, updateEmployeeDto);
         return employee;
     }
-
 
     async deleteEmployee(id: string): Promise<void> {
         const employee = await this.getEmployeeByExternalId(id);

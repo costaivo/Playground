@@ -3,6 +3,7 @@ import { Employee } from "./employee.entity";
 import { v4 as uuidv4 } from 'uuid';
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { BadRequestException } from "@nestjs/common";
+import { BaseEmployeeDto } from "./dto/base-employee.dto";
 
 
 @EntityRepository(Employee)
@@ -10,8 +11,7 @@ export class EmployeeRepository extends Repository<Employee> {
 
     async createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
 
-        const { firstName, lastName, employeeCode, emailAddress,
-            mobileNumber, dateOfJoining, teamName, designation } = createEmployeeDto;
+        const {employeeCode, emailAddress} = createEmployeeDto;
 
         // Validate if the employeeCode or Email Address is not not present in the DB
         const existingEmployees = await this.getEmployeeByEmailOrCode(emailAddress, employeeCode);
@@ -25,13 +25,17 @@ export class EmployeeRepository extends Repository<Employee> {
 
         const employee = new Employee();
         employee.externalId = uuidv4();
-        this.setEmployeeFields(employee, employeeCode, firstName, lastName,
-            emailAddress, dateOfJoining, teamName, designation, mobileNumber);
+        employee.employeeCode = employeeCode;
+        this.setEmployeeFields(employee,createEmployeeDto);
         await employee.save();
         return employee;
 
     }
-
+    async updateEmployee(employee:Employee,updateEmployeeDto:UpdateEmployeeDto):Promise<Employee> {
+        this.setEmployeeFields(employee, updateEmployeeDto);
+        await employee.save();
+        return employee;
+    }
     async getEmployeeByEmailOrCode(emailAddress: string, employeeCode: string): Promise<Employee[]> {
         const query = this.createQueryBuilder('employee');
         if (emailAddress) {
@@ -57,17 +61,13 @@ export class EmployeeRepository extends Repository<Employee> {
         return employee;
     }
 
-    private setEmployeeFields(employee: Employee, employeeCode: string,
-        firstName: string, lastName: string, emailAddress: string,
-        dateOfJoining: Date, teamName: string, designation:
-            string, mobileNumber: string) {
-        employee.employeeCode = employeeCode;
-        employee.firstName = firstName;
-        employee.lastName = lastName;
-        employee.emailAddress = emailAddress;
-        employee.dateOfJoining = dateOfJoining;
-        employee.teamName = teamName;
-        employee.designation = designation;
-        employee.mobileNumber = mobileNumber;
+    private setEmployeeFields(employee:Employee,dto:BaseEmployeeDto) {
+        employee.firstName = dto.firstName;
+        employee.lastName = dto.lastName;
+        employee.emailAddress = dto.emailAddress;
+        employee.dateOfJoining = dto.dateOfJoining;
+        employee.teamName = dto.teamName;
+        employee.designation = dto.designation;
+        employee.mobileNumber = dto.mobileNumber;
     }
 }
