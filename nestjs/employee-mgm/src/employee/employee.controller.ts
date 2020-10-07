@@ -34,7 +34,7 @@ export class EmployeeController {
 
     @Put('/:id')
     updateEmployee(@Param('id', ParseUUIDPipe) id: string,
-    @Body() updateEmployeeDto:UpdateEmployeeDto): Promise<Employee> {
+    @Body() updateEmployeeDto : UpdateEmployeeDto): Promise<Employee> {
         return this.employeeService.updateEmployee(id,updateEmployeeDto);
     }
 

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { Employee } from './employee.entity';
@@ -22,9 +22,21 @@ export class EmployeeService {
         return employee;
     }
 
-    createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
-        return this.employeeRepository.createEmployee(createEmployeeDto);
+    
+   async  createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
+    const { employeeCode, emailAddress} = createEmployeeDto;
+
+    // Validate if the employeeCode or Email Address is not not present in the DB
+    const existingEmployees = await this.employeeRepository.getEmployeeByEmailOrCode(emailAddress, employeeCode);
+
+    if (existingEmployees.length > 0) {
+        if (existingEmployees[0].emailAddress == emailAddress)
+            throw new BadRequestException(`Employee Email Address: "${emailAddress}" already exists in DB`);
+        if (existingEmployees[0].employeeCode == employeeCode)
+            throw new BadRequestException(`Employee Code: "${employeeCode}" already exists in DB`);
     }
+    return this.employeeRepository.createEmployee(createEmployeeDto);
+}
 
     async updateEmployee(id: string, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
         const employee = await this.getEmployeeByExternalId(id);

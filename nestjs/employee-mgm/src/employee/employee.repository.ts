@@ -2,8 +2,8 @@ import {  EntityRepository, Repository } from "typeorm";
 import { Employee } from "./employee.entity";
 import { v4 as uuidv4 } from 'uuid';
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
-import { BadRequestException } from "@nestjs/common";
 import { BaseEmployeeDto } from "./dto/base-employee.dto";
+import { UpdateEmployeeDto } from "./dto/update-employee.dto";
 
 
 @EntityRepository(Employee)
@@ -11,26 +11,16 @@ export class EmployeeRepository extends Repository<Employee> {
 
     async createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
 
-        const {employeeCode, emailAddress} = createEmployeeDto;
-
-        // Validate if the employeeCode or Email Address is not not present in the DB
-        const existingEmployees = await this.getEmployeeByEmailOrCode(emailAddress, employeeCode);
-
-        if (existingEmployees.length > 0) {
-            if (existingEmployees[0].emailAddress == emailAddress)
-                throw new BadRequestException(`Employee Email Address: "${emailAddress}" already exists in DB`);
-            if (existingEmployees[0].employeeCode == employeeCode)
-                throw new BadRequestException(`Employee Code: "${employeeCode}" already exists in DB`);
-        }
+        const { employeeCode} = createEmployeeDto;
 
         const employee = new Employee();
         employee.externalId = uuidv4();
         employee.employeeCode = employeeCode;
-        this.setEmployeeFields(employee,createEmployeeDto);
+        this.setEmployeeFields(employee, createEmployeeDto);
         await employee.save();
         return employee;
-
     }
+
     async updateEmployee(employee:Employee,updateEmployeeDto:UpdateEmployeeDto):Promise<Employee> {
         this.setEmployeeFields(employee, updateEmployeeDto);
         await employee.save();
