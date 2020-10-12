@@ -78,3 +78,60 @@ export class BaseEmployeeDto{
     emailAddress:string;
 }
 ```
+
+### Adding Documentation using plugins
+
+``` typescript
+export class BaseEmployeeDto{
+    @IsNotEmpty()
+    firstName:string;
+
+    @IsOptional()
+    middleName?:string;
+
+    @IsNotEmpty()
+    lastName:string;
+
+    @IsOptional()
+    teamName?:string;
+    
+    @IsEnum(Designation)
+    designation:Designation;
+    
+    @IsISO8601()
+    dateOfJoining:Date;
+    
+    @IsNumberString()
+    mobileNumber:string;
+    
+    @IsNotEmpty()
+    emailAddress:string;
+}
+```
+
+`nest-cli.json` Add the compilerOptions section for nestJs Plugin
+``` json
+
+{
+    "compilerOptions": {
+        "plugins": ["@nestjs/swagger/plugin"]
+    }
+}
+
+```
+OR
+
+``` json
+{
+    "compilerOptions": {
+        "plugins": [{
+            "name": "@nestjs/swagger",
+            "options": {
+                "introspectComments": true
+            }
+        }]
+    }
+}
+```
+
+### Documenting controllers

@@ -1,3 +1,4 @@
+import { ApiHideProperty } from "@nestjs/swagger/dist/decorators/api-hide-property.decorator";
 import { Exclude } from "class-transformer";
 import { IsEmail } from "class-validator";
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
@@ -12,6 +13,7 @@ export enum Designation {
 
 @Entity()
 export class Employee extends BaseEntity {
+    @ApiHideProperty()
     @Exclude({toPlainOnly:true})
     @PrimaryGeneratedColumn()
     id: number;
@@ -51,6 +53,7 @@ export class Employee extends BaseEntity {
     @Column({ nullable: true })
     mobileNumber:string;
 
+    @ApiHideProperty()
     @Exclude({toPlainOnly:true})
     @Column({ nullable: true })
     password:string;

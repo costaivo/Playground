@@ -8,7 +8,7 @@ async function bootstrap() {
   const options = new DocumentBuilder()
   .setTitle('Training Tracker')
   .setDescription('The API for Training Tracker Application')
-  .setVersion('0.1')
+  .setVersion('0.2')
   .build();
 const document = SwaggerModule.createDocument(app, options);
 SwaggerModule.setup('api', app, document);

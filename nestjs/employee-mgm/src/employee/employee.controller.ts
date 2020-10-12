@@ -1,9 +1,14 @@
 import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiForbiddenResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Employee } from './employee.entity';
 import { EmployeeService } from './employee.service';
 
+@ApiBearerAuth()
+@ApiTags('employee')
+@ApiForbiddenResponse({ description: 'Forbidden.'})
 @Controller('employee')
 @UseInterceptors(ClassSerializerInterceptor)
 export class EmployeeController {
@@ -12,6 +17,11 @@ export class EmployeeController {
 
     }
 
+    @ApiResponse({
+        status: 200,
+        description: 'The found record',
+        type: Employee,
+      })
     @Get()
     getEmployees(): Promise<Employee[]> {
         return this.employeeService.getEmployees();
@@ -21,6 +31,8 @@ export class EmployeeController {
         return this.employeeService.getEmployeeById(id);
     }
 
+    @ApiOperation({ summary: 'Create Employee' })
+    @ApiBadRequestResponse({description: 'Bad Request'})
     @Post()
     @UsePipes(ValidationPipe)
     createEmployee(@Body() createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
