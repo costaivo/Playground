@@ -119,6 +119,7 @@ export class BaseEmployeeDto{
 }
 
 ```
+
 OR
 
 ``` json
@@ -135,3 +136,30 @@ OR
 ```
 
 ### Documenting controllers
+
+``` Typescript
+@ApiTags('employee')
+export class EmployeeController {
+}
+```
+
+
+``` Typescript
+   @ApiResponse({
+        status: 200,
+        description: 'The found record',
+        type: Employee,
+      })
+    @Get()
+    getEmployees(): Promise<Employee[]> {
+        return this.employeeService.getEmployees();
+    }
+```
+
+``` Typescript
+@ApiBearerAuth()
+@ApiTags('employee')
+@ApiForbiddenResponse({ description: 'Forbidden.'})
+export class EmployeeController {
+}
+```
