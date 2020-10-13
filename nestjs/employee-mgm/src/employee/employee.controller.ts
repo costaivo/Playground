@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Logger, Param, ParseUUIDPipe, Post, Put, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiBadRequestResponse, ApiForbiddenResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -12,7 +12,8 @@ import { EmployeeService } from './employee.service';
 @Controller('employee')
 @UseInterceptors(ClassSerializerInterceptor)
 export class EmployeeController {
-
+    private logger = new Logger('EmployeeController');
+    
     constructor(private employeeService: EmployeeService) {
 
     }
@@ -24,6 +25,7 @@ export class EmployeeController {
       })
     @Get()
     getEmployees(): Promise<Employee[]> {
+        this.logger.verbose(`Get Employees invoked`);
         return this.employeeService.getEmployees();
     }
     @Get('/:id')
@@ -36,17 +38,20 @@ export class EmployeeController {
     @Post()
     @UsePipes(ValidationPipe)
     createEmployee(@Body() createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
+        this.logger.verbose(`Create Employees invoked with params : ${JSON.stringify(createEmployeeDto)}`);
         return this.employeeService.createEmployee(createEmployeeDto);
     }
 
     @Delete('/:id')
     deleteEmployee(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+        this.logger.verbose(`Deleting Employee with id ${id}`);
         return this.employeeService.deleteEmployee(id)
     }
 
     @Put('/:id')
     updateEmployee(@Param('id', ParseUUIDPipe) id: string,
     @Body() updateEmployeeDto : UpdateEmployeeDto): Promise<Employee> {
+        this.logger.verbose(`Updating Employee with id ${id} with parameters : ${JSON.stringify(updateEmployeeDto)}`);
         return this.employeeService.updateEmployee(id,updateEmployeeDto);
     }
 

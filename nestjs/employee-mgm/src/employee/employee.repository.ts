@@ -1,17 +1,20 @@
-import {  EntityRepository, Repository } from "typeorm";
+import { EntityRepository, Repository } from "typeorm";
 import { Employee } from "./employee.entity";
 import { v4 as uuidv4 } from 'uuid';
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { BaseEmployeeDto } from "./dto/base-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
+import { InternalServerErrorException, Logger } from "@nestjs/common";
 
 
 @EntityRepository(Employee)
 export class EmployeeRepository extends Repository<Employee> {
 
+    private logger = new Logger("EmployeeRepository");
+
     async createEmployee(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
 
-        const { employeeCode} = createEmployeeDto;
+        const { employeeCode } = createEmployeeDto;
 
         const employee = new Employee();
         employee.externalId = uuidv4();
@@ -21,7 +24,7 @@ export class EmployeeRepository extends Repository<Employee> {
         return employee;
     }
 
-    async updateEmployee(employee:Employee,updateEmployeeDto:UpdateEmployeeDto):Promise<Employee> {
+    async updateEmployee(employee: Employee, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
         this.setEmployeeFields(employee, updateEmployeeDto);
         await employee.save();
         return employee;
@@ -40,8 +43,14 @@ export class EmployeeRepository extends Repository<Employee> {
 
     async getEmployees(): Promise<Employee[]> {
         const query = this.createQueryBuilder('employee');
-        const employees = await query.getMany();
-        return employees;
+        try {
+            const employees = await query.getMany();
+            return employees;
+        }
+        catch (error) {
+            this.logger.error(`Failed to get employee records`, error.stack);
+            throw new InternalServerErrorException();
+        }
     }
 
     async getEmployeeByExternalId(externalId: string): Promise<Employee> {
@@ -51,7 +60,7 @@ export class EmployeeRepository extends Repository<Employee> {
         return employee;
     }
 
-    private setEmployeeFields(employee:Employee,dto:BaseEmployeeDto) {
+    private setEmployeeFields(employee: Employee, dto: BaseEmployeeDto) {
         employee.firstName = dto.firstName;
         employee.lastName = dto.lastName;
         employee.emailAddress = dto.emailAddress;
