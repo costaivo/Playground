@@ -1,6 +1,9 @@
 import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Logger, Param, ParseUUIDPipe, Post, Put, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiBadRequestResponse, ApiForbiddenResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/core/user.entity';
+import { UserRepository } from 'src/core/user.repository';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Employee } from './employee.entity';
@@ -14,7 +17,10 @@ import { EmployeeService } from './employee.service';
 export class EmployeeController {
     private logger = new Logger('EmployeeController');
     
-    constructor(private employeeService: EmployeeService) {
+    constructor(private employeeService: EmployeeService,
+        @InjectRepository(UserRepository)
+        private userRepository: UserRepository
+        ) {
 
     }
 
@@ -32,6 +38,12 @@ export class EmployeeController {
     getEmployeeById(@Param('id', ParseUUIDPipe) id: string): Promise<Employee> {
         return this.employeeService.getEmployeeById(id);
     }
+
+    @Get('user/:id')
+    getUserById(@Param('id', ParseUUIDPipe) id: string): Promise<User> {
+        return this.userRepository.getByExternalId(id);
+    }
+
 
     @ApiOperation({ summary: 'Create Employee' })
     @ApiBadRequestResponse({description: 'Bad Request'})
