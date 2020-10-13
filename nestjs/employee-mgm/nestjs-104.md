@@ -1,4 +1,4 @@
-# Training Tacker  Application
+# API documentation
 
 ## Adding API documentation
 
