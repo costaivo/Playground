@@ -18,7 +18,7 @@ services:
     container_name: postgres-pgadmin
     image: dpage/pgadmin4:latest
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@creativecapsule.com
+      - PGADMIN_DEFAULT_EMAIL=admin@cc.com
       - PGADMIN_DEFAULT_PASSWORD=cci1234
     ports:
       - 8085:80
