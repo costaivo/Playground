@@ -11,11 +11,14 @@ export class UserRepository extends Repository<User>{
 
         const user = new User();
         user.username = username;
-        user.setHashPassword(password);
+        user.salt  =  await bcrypt.genSalt();
+        user.password = await user.hashPassword(password)
+        console.log(user.password);
         // Dummy just for testing.
         user.emailAddress = password
 
         try{
+            console.log(`User password ${user.password} & ${user.emailAddress}`)
         await user.save();
         } catch (error){
             console.log(error.code);

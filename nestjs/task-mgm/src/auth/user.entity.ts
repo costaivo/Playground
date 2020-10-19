@@ -22,11 +22,7 @@ export class User extends BaseEntity{
         const hashedPassword = await this.hashPassword(password);
         return hashedPassword == this.password;
     }
-    async setHashPassword(password:string){
-        this.salt  =  await bcrypt.genSalt();
-        this.password = await this.hashPassword(password);
-    }
-    private  async hashPassword(password:string):Promise<string>{
+    async hashPassword(password:string):Promise<string>{
         const hashedPassword = await bcrypt.hash(password,this.salt);
         return hashedPassword;
     }

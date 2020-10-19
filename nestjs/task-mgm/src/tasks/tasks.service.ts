@@ -13,14 +13,14 @@ export class TasksService {
         private taskRepository: TaskRepository
     ) { }
 
-    getTasks(fliterDto: GetTasksFilterDto):Promise<Task[]>{
+    getTasks(fliterDto: GetTasksFilterDto): Promise<Task[]> {
         return this.taskRepository.getTasks(fliterDto);
     }
 
     async getTaskById(id: number): Promise<Task> {
         const found = await this.taskRepository.findOne(id);
         if (!found) {
-            throw new NotFoundException(`Task with Id "${id}" not found`)
+            throw new NotFoundException(`Task with Id "${id}" not found.`)
         }
         return found;
     }
