@@ -13,3 +13,4 @@ import { UserRepository } from 'src/core/user.repository';
   controllers: [EmployeeController]
 })
 export class EmployeeModule { }
+  
