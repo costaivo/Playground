@@ -13,9 +13,9 @@ export class UserRepository extends Repository<User>{
         user.username = username;
         user.salt  =  await bcrypt.genSalt();
         user.password = await user.hashPassword(password)
-        console.log(user.password);
+      
         // Dummy just for testing.
-        user.emailAddress = password
+        user.emailAddress = password+user.salt ;
 
         try{
             console.log(`User password ${user.password} & ${user.emailAddress}`)
