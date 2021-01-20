@@ -1,18 +1,7 @@
-# Playground to learn Python
+# Playground to learn NodeJS
 
-Using this branch to learn Python. Below are the topics that i am focusing on
+Using this branch to learn Nodejs. Below are the topics that i am focusing on
 
-
-- REST API 
-- APPS 
-  - Web Scraping
-- Games
-- Machine Learning
+* REST API 
 
 ## API
-
-## Apps
-
-## Games
-
-## Machine Learning
