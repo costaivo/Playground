@@ -1,7 +1,6 @@
 # Playground to learn NodeJS
 
-Using this branch to learn Nodejs. Below are the topics that i am focusing on
+Using this branch to learn Nodejs. 
 
-* REST API 
-
-## API
+# Udemy Courses
+- [NodeJs Ultimate Developer course](https://www.udemy.com/course/the-complete-nodejs-developer-course-2)
