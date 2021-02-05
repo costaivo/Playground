@@ -63,12 +63,7 @@ yargs.command({
         }
     },
     handler: (argv) => {
-        console.log(argv.title)
-        const noteList = notes.getNotes();
-        const selectedNote = noteList.filter((note) => { return note.title === argv.title });
-
-        console.log(chalk.inverse("Title:"), selectedNote[0].title);
-        console.log(chalk.inverse("Body:"), selectedNote[0].body)
+        notes.readNote(argv.title)
     }
 });
 

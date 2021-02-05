@@ -1,6 +1,6 @@
 const fs = require('fs');
 const log = require('./logger');
-
+const chalk = require('chalk');
 const getNotes = () => loadNotes();
 
 
@@ -59,9 +59,20 @@ const listNotes = () => {
         log.data(note.title);
     })
 }
+const readNote = (title) => {
+    const noteList = loadNotes();
+    const selectedNote = noteList.find((note) => note.title === title);
+    if (selectedNote) {
+        console.log(chalk.inverse("Title:"), selectedNote.title);
+        console.log(chalk.inverse("Body:"), selectedNote.body)
+    }
+    else {
+        log.error('Note not found')
+    }
+}
 module.exports = {
-    getNotes,
     addNote,
     removeNote,
-    listNotes
+    listNotes,
+    readNote
 }
