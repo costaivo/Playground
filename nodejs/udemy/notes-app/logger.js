@@ -1,12 +1,12 @@
 const chalk = require('chalk');
 
-const error = function (message) {
-    console.log(chalk.red.inverse(message));
-}
+const error = (message) =>
+    console.log(chalk.red.inverse(message))
 
-const success = function (message) {
-    console.log(chalk.green.inverse(message));
-}
+
+const success = (message) =>
+    console.log(chalk.green.inverse(message))
+
 
 module.exports = {
     error,
