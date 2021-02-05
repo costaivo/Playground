@@ -28,6 +28,7 @@ const saveNotes = (notes) => {
     const dataJSON = JSON.stringify(notes)
     fs.writeFileSync('notes.json', dataJSON)
 }
+
 const loadNotes = () => {
     try {
         const dataBuffer = fs.readFileSync('notes.json');
@@ -51,8 +52,18 @@ const removeNote = (title) => {
     else
         log.error('Note not found')
 }
+const listNotes = () => {
+    const notes = loadNotes()
+
+    log.info("Your Notes:")
+
+    notes.forEach(note => {
+        log.data(note.title);
+    })
+}
 module.exports = {
     getNotes,
     addNote,
-    removeNote
+    removeNote,
+    listNotes,
 }

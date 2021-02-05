@@ -11,12 +11,12 @@ yargs.command({
     description: 'Add a new note',
     builder: {
         title: {
-            descripe: 'Note title',
+            describe: 'Note title',
             demandOption: true,
             type: 'string'
         },
         body: {
-            descripe: 'Note contents',
+            descripb: 'Note contents',
             demandOption: true,
             type: 'string'
         }
@@ -33,12 +33,12 @@ yargs.command({
     description: 'removes a note',
     builder: {
         title: {
-            descripe: 'Note title',
+            describe: 'Note title',
             demandOption: true,
             type: 'string'
         }
     },
-    handler: function (argv) {
+    handler: (argv) => {
         notes.removeNote(argv.title);
     }
 });
@@ -47,18 +47,28 @@ yargs.command({
 yargs.command({
     command: 'list',
     description: 'list all notes',
-    handler: function () {
-        const note = notes.getNotes();
-        console.log(note);
-    }
+    handler: () =>
+        notes.listNotes()
 });
 
 // read command
 yargs.command({
     command: 'read',
     description: 'read a notes',
-    handler: function () {
-        console.log("reading  note");
+    builder: {
+        title: {
+            describe: "Note Title",
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: (argv) => {
+        console.log(argv.title)
+        const noteList = notes.getNotes();
+        const selectedNote = noteList.filter((note) => { return note.title === argv.title });
+
+        console.log(chalk.inverse("Title:"), selectedNote[0].title);
+        console.log(chalk.inverse("Body:"), selectedNote[0].body)
     }
 });
 
